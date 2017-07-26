@@ -5,8 +5,7 @@ var mysql = require('mysql');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
-// DATABASE SETTING
-// Change to Google Cloud SQL
+// DATABASE SETTING (Google Cloud SQL)
 var connection = mysql.createConnection({
     host     : '104.154.161.83',
     port     : 3306,

@@ -6,38 +6,42 @@
 </head>
 <body>
 
-<form action="/email/form" method="post">
+<form action="" method="post">
     email : <input type="text" name="email"><br/>
     password : <input type="password" name="password"><br/>
 </form>
 
-<button class="ajaxSend">Login</button>
+<button class="loginButton">Login</button>
 
 <div class="result"></div>
 
 
 <script>
-    document.querySelector('.ajaxSend').addEventListener('click', function() {
+    document.querySelector('.loginButton').addEventListener('click', function() {
+
         var email = document.getElementsByName('email')[0].value;
         var password = document.getElementsByName('password')[0].value;
-        sendAjax('http://127.0.0.1:3000/login', { 'email' : email, 'password' : password });
+
+        sendAjax('http://localhost:3000/login', email, password);
     });
 
+
     // Ajax로 전달
-    function sendAjax(url, data) {
-        data = JSON.stringify(data); // json -> string
+    function sendAjax(url, email, password) {
+        var data = { 'email' : email, 'password' : password };
+
+        data = JSON.stringify(data);
 
         var xmlHttpRequest = new XMLHttpRequest();
         xmlHttpRequest.open('POST', url);
-        xmlHttpRequest.setRequestHeader('Content-Type', "application/json");
+        xmlHttpRequest.setRequestHeader('Content-Type', 'application/json');
         xmlHttpRequest.send(data);
-
         xmlHttpRequest.addEventListener('load', function() {
+            console.log("responseText : " + xmlHttpRequest.responseText);
             var result = JSON.parse(xmlHttpRequest.responseText);
             var resultDiv = document.querySelector(".result");
 
             if (result.email) {
-//                resultDiv.innerHTML = "Welcome, " + result.email + "!!";
                 window.location.href="/main";
             }
             else if (xmlHttpRequest.status === 401) {

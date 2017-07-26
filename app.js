@@ -14,7 +14,7 @@ app.listen(3000, function() {
 
 app.use(express.static('public'));
 app.use(bodyParser.json()); // Json Parser
-app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.urlencoded({ extended:true }));
 app.set('view engine', 'ejs');
 app.use(session({
     secret: 'keyboard cat',
