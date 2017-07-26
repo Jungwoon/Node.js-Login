@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>email form</title>
+</head>
+<body>
+
+<form action="/email/form" method="post">
+    email : <input type="text" name="email"><br/>
+    password : <input type="password" name="password"><br/>
+</form>
+
+<button class="ajaxSend">Login</button>
+
+<div class="result"></div>
+
+
+<script>
+    document.querySelector('.ajaxSend').addEventListener('click', function() {
+        var email = document.getElementsByName('email')[0].value;
+        var password = document.getElementsByName('password')[0].value;
+        sendAjax('http://127.0.0.1:3000/login', { 'email' : email, 'password' : password });
+    });
+
+    // Ajax로 전달
+    function sendAjax(url, data) {
+        data = JSON.stringify(data); // json -> string
+
+        var xmlHttpRequest = new XMLHttpRequest();
+        xmlHttpRequest.open('POST', url);
+        xmlHttpRequest.setRequestHeader('Content-Type', "application/json");
+        xmlHttpRequest.send(data);
+
+        xmlHttpRequest.addEventListener('load', function() {
+            var result = JSON.parse(xmlHttpRequest.responseText);
+            var resultDiv = document.querySelector(".result");
+
+            if (result.email) {
+//                resultDiv.innerHTML = "Welcome, " + result.email + "!!";
+                window.location.href="/main";
+            }
+            else if (xmlHttpRequest.status === 401) {
+                resultDiv.innerHTML = result + "<div class='signup'><a href='/join'>Sign up</a><div>";
+            }
+            else {
+                resultDiv.innerHTML = result;
+            }
+        });
+
+    }
+
+</script>
+
+</body>
+</html>
