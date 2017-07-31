@@ -46,7 +46,7 @@ passport.use('local-login', new LocalStrategy({
         console.log("email : " + email);
         console.log("password : " + password);
 
-        var query = connection.query('select * from user where email=?', [email], function (err, rows) {
+        connection.query('select * from user where email=?', [email], function (err, rows) {
 
             if (err) return done(err);
 

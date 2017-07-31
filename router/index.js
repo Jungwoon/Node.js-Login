@@ -7,10 +7,12 @@ var email = require('./email/email');
 var join = require('./join/index');
 var login = require('./login/index');
 var logout = require('./logout/index');
+var movie = require('./movie/index');
 
 // '/'로 들어오면 /public/main.html을 열어준다.
 router.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname, "../public/main.html"));
+    // res.sendFile(path.join(__dirname, "../public/main.html"));
+    res.render('main.ejs');
 });
 
 router.use('/main', main);
@@ -18,5 +20,6 @@ router.use('/email', email);
 router.use('/join', join);
 router.use('/login', login);
 router.use('/logout', logout);
+router.use('/movie', movie);
 
 module.exports = router;

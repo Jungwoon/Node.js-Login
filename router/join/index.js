@@ -43,7 +43,7 @@ passport.use('local-join', new LocalStrategy({
         passReqToCallback: true
     },
     function(req, email, password, done) {
-        var query = connection.query('select * from user where email=?', [email], function (err, rows) {
+        connection.query('select * from user where email=?', [email], function (err, rows) {
             if (err) {
                 console.log('something wrong');
                 return done(err);
@@ -56,8 +56,8 @@ passport.use('local-join', new LocalStrategy({
             else {
                 console.log('no existed user');
                 var sql = {email: email, pw: password};
-                var query = connection.query('insert into user set ?', sql, function (err, rows) {
-                   if (err) throw err
+                connection.query('insert into user set ?', sql, function (err, rows) {
+                   if (err) throw err;
                     return done(null, { 'email' : email, 'id' : rows.insertId });
                 });
             }
@@ -71,21 +71,5 @@ router.post('/', passport.authenticate('local-join', {
     failureRedirect: '/join',
     failureFlash: true
 }));
-
-// router.post('/', function (req, res) {
-//     var body = req.body;
-//     var email = body.email;
-//     var name = body.name;
-//     var passwd = body.password;
-//
-//     var sql = { email : email, name : name, pw : passwd }
-//
-//     var query = connection.query('insert into user set ?', sql, function (err, rows) {
-//         if (err) { throw err; }
-//         console.log("DB inserted : ", rows.insertId, name)
-//
-//         res.render('welcome.ejs', { 'name' : name, 'id' : rows.insertId });
-//     });
-// });
 
 module.exports = router;
