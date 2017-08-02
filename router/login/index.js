@@ -5,6 +5,7 @@ var path = require('path');
 var mysql = require('mysql');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var KakaoStrategy = require('passport-kakao').Strategy;
 
 // DATABASE SETTING (Google Cloud SQL)
 var connection = mysql.createConnection({
@@ -24,8 +25,13 @@ router.get('/', function(req, res) {
 
     console.log("router.get : " + errMsg);
 
-    if (errMsg) msg = errMsg;
-    res.render('login.ejs', {'message' : msg});
+    if (errMsg) {
+        console.log("errMsg : " + errMsg);
+        msg = errMsg;
+    }
+
+    console.log("call login.ejs and message : " + msg);
+    res.render('login.ejs', {'message' : msg}); // login.ejs 호출
 });
 
 passport.serializeUser(function(user, done) {
@@ -36,15 +42,15 @@ passport.deserializeUser(function(id, done) {
     done(null, id);
 });
 
-passport.use('local-login', new LocalStrategy({
+passport.use('login-local', new LocalStrategy({
         usernameField: 'email',
         passwordField: 'password',
         passReqToCallback: true
     },
     function(req, email, password, done) {
 
-        console.log("email : " + email);
-        console.log("password : " + password);
+        console.log("login email : " + email);
+        console.log("login password : " + password);
 
         connection.query('select * from user where email=?', [email], function (err, rows) {
 
@@ -61,12 +67,43 @@ passport.use('local-login', new LocalStrategy({
     }
 ));
 
+// for Kakao Auth
+// passport.use('login-kakao', new KakaoStrategy({
+//         clientID : '8f110c83b0e6eb21a75785d7129ade26',
+//         callbackURL : '/main'
+//     },
+//     function(accessToken, refreshToken, profile, done){
+//
+//         console.log("profile : " + profile._json);
+//
+//         // 사용자의 정보는 profile에 들어있다.
+//         // User.findOrCreate(..., function(err, user) {
+//         //     if (err) { return done(err); }
+//         //     done(null, user);
+//         // });
+//     }
+// ));
+
 
 router.post('/', function(req, res, next) {
 
-    passport.authenticate('local-login', function(err, user, info) {
-        if (err) res.status(500).json(err); // 500 : Server Error
-        if (!user) return res.status(401).json(info.message); // 401 : 권한없음
+    console.log("login received to login");
+
+    passport.authenticate('login-local', function(err, user, info) {
+
+        console.log("in in in local-login");
+
+        if (err) {
+            console.log("inter error");
+            res.status(500).json(err); // 500 : Server Error
+        }
+
+
+
+        if (!user) {
+            console.log("!user");
+            return res.status(401).json(info.message); // 401 : 권한없음
+        }
 
         req.logIn(user, function(err) {
 
@@ -79,6 +116,8 @@ router.post('/', function(req, res, next) {
 
             return res.json(user);
         });
+
+        console.log("done");
 
     }) (req, res, next);
 

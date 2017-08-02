@@ -6,10 +6,10 @@ router.get('/', function(req, res) {
     var id = req.user;
 
     if (!id) {
-        res.render('login.ejs');
+        res.render('main.ejs');
     }
     else {
-        res.render('main.ejs', { 'id' : id });
+        res.render('main.ejs', { data: id } );
     }
 
 });

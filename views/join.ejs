@@ -3,18 +3,31 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    <title>Join !</title>
+    <title>Sign up</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/signup.css" rel="stylesheet">
 </head>
 <body>
-    <h1>join my website!</h1>
+    <div class="container">
 
-    <section class="'messages"> <%= message %> </section>
+        <form class="form-signin" action="/join" method="post">
+            <h2 class="form-signin-heading">Please Sign up</h2>
 
-    <form action="/join" method="post">
-        email : <input type="email" name="email"><br>
-        password : <input type="password" name="password"><br>
-        <input type="submit">
-    </form>
+            <label for="inputEmail" class="sr-only">Email address</label>
+            <input type="email" name="email" class="form-control" placeholder="Email address" required autofocus>
+
+            <label for="inputName" class="sr-only">Name</label>
+            <input type="text" name="name" class="form-control" placeholder="Name" required>
+
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input type="password" name="password" class="form-control" placeholder="Password" required>
+
+            <button class="btn btn-lg btn-default btn-block loginButton">Sign up</button>
+        </form>
+
+        <div class="showResult"></div>
+
+    </div>
 
 </body>
 </html>

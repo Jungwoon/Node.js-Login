@@ -3,7 +3,9 @@ var router = express.Router();
 
 router.get('/', function(req, res){
     req.logout();
-    res.redirect('/login');
+    res.redirect('/');
+
+    console.log("logout done");
 });
 
 module.exports = router;

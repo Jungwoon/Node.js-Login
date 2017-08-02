@@ -3,9 +3,10 @@ var app = express(); // express 모듈을 app이라는 변수명으로 사용
 var bodyParser = require('body-parser'); // body-parser를 bodyParser란 변수로 사용
 var router = require('./router/index');
 var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
 var session = require('express-session');
 var flash = require('connect-flash');
+var LocalStrategy = require('passport-local').Strategy;
+var KakaoStrategy = require('passport-kakao').Strategy;
 
 
 app.listen(3000, function() {

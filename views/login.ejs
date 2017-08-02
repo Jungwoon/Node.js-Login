@@ -5,51 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <title>Login</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
-
-    <style>
-        body {
-            padding-top: 40px;
-            padding-bottom: 40px;
-            /*background-color: #eee;*/
-        }
-
-        .form-signin {
-            max-width: 330px;
-            padding: 15px;
-            margin: 0 auto;
-        }
-        .form-signin .form-signin-heading,
-        .form-signin .checkbox {
-            margin-bottom: 10px;
-        }
-        .form-signin .checkbox {
-            font-weight: normal;
-        }
-        .form-signin .form-control {
-            position: relative;
-            height: auto;
-            -webkit-box-sizing: border-box;
-            -moz-box-sizing: border-box;
-            box-sizing: border-box;
-            padding: 10px;
-            font-size: 16px;
-        }
-        .form-signin .form-control:focus {
-            z-index: 2;
-        }
-        .form-signin input[type="email"] {
-            margin-bottom: -1px;
-            border-bottom-right-radius: 0;
-            border-bottom-left-radius: 0;
-        }
-        .form-signin input[type="password"] {
-            margin-bottom: 10px;
-            border-top-left-radius: 0;
-            border-top-right-radius: 0;
-        }
-
-    </style>
-
+    <link href="css/signin.css" rel="stylesheet">
 </head>
 <body>
 
@@ -66,10 +22,11 @@
                 <!--<input type="checkbox" value="remember-me"> Remember me-->
             <!--</label>-->
         <!--</div>-->
-        <button class="btn btn-lg btn-default btn-block loginButton">Sign in</button>
     </form>
 
-    <div class="result"></div>
+    <button class="btn btn-lg btn-default btn-block loginButton">Sign in</button>
+
+    <div class="showResult"></div>
 
 </div>
 
@@ -79,8 +36,13 @@
 <script>
     document.querySelector('.loginButton').addEventListener('click', function() {
 
+
         var email = document.getElementsByName('email')[0].value;
         var password = document.getElementsByName('password')[0].value;
+
+        console.log("clicked");
+        console.log("email: " + email);
+        console.log("password: " + password);
 
         sendAjax('http://localhost:3000/login', email, password);
     });
@@ -96,20 +58,29 @@
         xmlHttpRequest.open('POST', url);
         xmlHttpRequest.setRequestHeader('Content-Type', 'application/json');
         xmlHttpRequest.send(data);
+
         xmlHttpRequest.addEventListener('load', function() {
             console.log("responseText : " + xmlHttpRequest.responseText);
             var result = JSON.parse(xmlHttpRequest.responseText);
-            var resultDiv = document.querySelector(".result");
+            var resultDiv = document.querySelector(".showResult");
+
+            console.log("xmlHttpRequest.status : " + xmlHttpRequest.status);
+            console.log("xmlHttpRequest.status of result : " + result);
 
             if (result.email) {
+                console.log("Success");
                 window.location.href="/main";
             }
             else if (xmlHttpRequest.status === 401) {
-                resultDiv.innerHTML = result + "<div class='signup'><a href='/join'>Sign up</a><div>";
+                console.log("401 : " + result);
+                resultDiv.innerHTML = result + "<div class='signup'><a href='/join'>Sign up</a></div>";
             }
             else {
+                console.log("Other");
                 resultDiv.innerHTML = result;
             }
+
+            console.log("done!!");
         });
 
     }
