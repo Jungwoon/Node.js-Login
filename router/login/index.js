@@ -6,6 +6,7 @@ var mysql = require('mysql');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var KakaoStrategy = require('passport-kakao').Strategy;
+var bcrypt = require('bcrypt-nodejs');
 
 // DATABASE SETTING (Google Cloud SQL)
 var connection = mysql.createConnection({
@@ -48,17 +49,23 @@ passport.use('login-local', new LocalStrategy({
         passReqToCallback: true
     },
     function(req, email, password, done) {
-
-        console.log("login email : " + email);
-        console.log("login password : " + password);
-
         connection.query('select * from user where email=?', [email], function (err, rows) {
 
             if (err) return done(err);
 
             if (rows.length) {
-                console.log("rows[0].uid : " + rows[0].uid);
-                return done(null, { 'email' : email, 'id' : rows[0].uid });
+                console.log("login email : " + email);
+                console.log("login password : " + password);
+                console.log("login rows[0].password : " + rows[0].password);
+
+                bcrypt.compare(password, rows[0].password, function(err, res) {
+                    if (res) {
+                        return done(null, { 'email' : email, 'id' : rows[0].uid });
+                    }
+                    else {
+                        return done(null, false, {'message' : 'Your password is incorrect'});
+                    }
+                });
             }
             else {
                 return done(null, false, {'message' : 'Your login info is not found'});
@@ -97,7 +104,6 @@ router.post('/', function(req, res, next) {
             console.log("inter error");
             res.status(500).json(err); // 500 : Server Error
         }
-
 
 
         if (!user) {

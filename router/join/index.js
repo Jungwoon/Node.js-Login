@@ -36,31 +36,32 @@ passport.deserializeUser(function(id, done) {
 });
 
 // 성공했을때 리다이렉트 시키는 부분
-router.post('/', passport.authenticate('local-join', {
+router.post('/', passport.authenticate('join-local', {
     successRedirect: '/main',
     failureRedirect: '/join',
     failureFlash: true
 }));
 
-passport.use('local-join', new LocalStrategy({
+passport.use('join-local', new LocalStrategy({
         usernameField: 'email',
         passwordField: 'password',
         passReqToCallback: true
     },
-    function(req, email, name, password, done) {
+    function(req, email, password, done) {
+
         connection.query('select * from user where email=?', [email], function (err, rows) {
             if (err) { return done(err); }
 
             if (rows.length) {
-                console.log('existed user');
                 return done(null, false, {message: 'your email is already used'});
             }
             else {
-                console.log('no existed user');
-                var sql = {email: email, name: name, pw: password};
-                connection.query('insert into user set ?', sql, function (err, rows) {
-                   if (err) throw err;
-                    return done(null, { 'email' : email, 'id' : rows.insertId });
+                bcrypt.hash(password, null, null, function(err, hash) {
+                    var sql = {email: email, password: hash};
+                    connection.query('insert into user set ?', sql, function (err, rows) {
+                        if (err) throw err;
+                        return done(null, { 'email' : email, 'id' : rows.insertId });
+                    });
                 });
             }
         })

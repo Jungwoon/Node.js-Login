@@ -7,6 +7,7 @@ var session = require('express-session');
 var flash = require('connect-flash');
 var LocalStrategy = require('passport-local').Strategy;
 var KakaoStrategy = require('passport-kakao').Strategy;
+var bcrypt = require('bcrypt-nodejs');
 
 
 app.listen(3000, function() {
