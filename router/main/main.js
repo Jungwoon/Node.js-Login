@@ -5,11 +5,13 @@ var path = require('path');
 router.get('/', function(req, res) {
     var id = req.user;
 
+    console.log("id : " + id);
+
     if (!id) {
-        res.render('main.ejs');
+        res.render('main.ejs', { isLogin: false });
     }
     else {
-        res.render('main.ejs', { data: id } );
+        res.render('main.ejs', { isLogin: true } );
     }
 
 });

@@ -3,7 +3,7 @@ var router = express.Router();
 
 router.get('/', function(req, res){
     req.logout();
-    res.redirect('/');
+    res.render('main.ejs', { isLogin: false });
 
     console.log("logout done");
 });

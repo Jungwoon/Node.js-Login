@@ -301,7 +301,7 @@ a img{
 
 .android-wear-section {
   position: relative;
-  background: url('../images/wear.png') center top no-repeat;
+  background: url('../images/bg3.jpg') center top no-repeat;
   background-size: cover;
   height: 800px;
 }
@@ -372,7 +372,7 @@ a img{
 }
 
 .android-customized-section-image {
-  background: url('../images/devices.jpg') center top no-repeat;
+  background: url('../images/bg2.jpg') center top no-repeat;
   background-size: cover;
   height: 400px;
 }

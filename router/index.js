@@ -11,8 +11,7 @@ var movie = require('./movie/index');
 
 // '/'로 들어오면 /public/main.html을 열어준다.
 router.get('/', function(req, res) {
-    // res.sendFile(path.join(__dirname, "../public/main.html"));
-    res.render('main.ejs');
+    res.render('main.ejs', {isLogin: false});
 });
 
 router.use('/main', main);
