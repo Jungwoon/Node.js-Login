@@ -10,22 +10,30 @@
 <body>
     <div class="container">
 
-        <form class="form-signin" action="/join" method="post">
-            <h2 class="form-signin-heading">Please Sign up</h2>
+        <div class="form-signin">
 
-            <label for="inputEmail" class="sr-only">Email address</label>
-            <input type="email" name="email" class="form-control" placeholder="Email address" required autofocus>
+            <form action="/join" method="post">
+                <h3 class="form-signin-heading">Please Sign up</h3>
 
-            <label for="inputPassword" class="sr-only">Password</label>
-            <input type="password" name="password" class="form-control" placeholder="Password" required>
+                <label for="inputEmail" class="sr-only">Email address</label>
+                <input type="email" name="email" class="form-control" placeholder="Email address" required autofocus>
 
-            <!--<label for="inputPassword" class="sr-only">Password</label>-->
-            <!--<input type="password" name="password" class="form-control" placeholder="Password" required>-->
+                <label for="inputPassword" class="sr-only">Password</label>
+                <input type="password" name="password" class="form-control" placeholder="Password" required>
 
-            <button class="btn btn-lg btn-default btn-block loginButton">Sign up</button>
-        </form>
+                <!--<label for="inputPassword" class="sr-only">Password</label>-->
+                <!--<input type="password" name="password" class="form-control" placeholder="Password" required>-->
 
-        <div class="showResult"></div>
+                <button class="btn btn-lg btn-default btn-block loginButton">Sign up</button>
+            </form>
+
+            <div class="showResult"></div>
+
+            <hr />
+
+            <div>Sign up with <a href=''>Facebook</a> or <a href=''>Naver</a> or <a href=''>Kakao</a></div>
+
+        </div>
 
     </div>
 

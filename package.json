@@ -16,6 +16,7 @@
     "mysql": "^2.13.0",
     "nodemon": "^1.11.0",
     "passport-kakao": "0.0.4",
+    "passport-naver": "^1.0.4",
     "path": "^0.12.7"
   },
   "devDependencies": {

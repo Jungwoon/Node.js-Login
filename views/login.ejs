@@ -11,41 +11,61 @@
 
 <div class="container">
 
-    <form class="form-signin" method="post">
-        <h2 class="form-signin-heading">Please sign in</h2>
-        <label for="inputEmail" class="sr-only">Email address</label>
-        <input type="email" name="email" class="form-control" placeholder="Email address" required autofocus>
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" name="password" class="form-control" placeholder="Password" required>
-        <!--<div class="checkbox">-->
-            <!--<label>-->
-                <!--<input type="checkbox" value="remember-me"> Remember me-->
-            <!--</label>-->
-        <!--</div>-->
-    </form>
+    <div class="form-signin">
 
-    <button class="btn btn-lg btn-default btn-block loginButton">Sign in</button>
+        <h3 class="form-signin-heading">Please Sign in</h3>
 
-    <div class="showResult"></div>
+        <button class="btn btn-lg btn-warning btn-block btn-login-kakao" onclick="location.href='http://localhost:3000/login/kakao'">Kakao</button>
+        <button class="btn btn-lg btn-primary btn-block btn-login-facebook" onclick="location.href=''">Facebook</button>
+        <button class="btn btn-lg btn-success btn-block btn-login-naver" onclick="location.href=''">Naver</button>
+
+        <hr />
+
+        <form method="post">
+            <label for="inputEmail" class="sr-only">Email address</label>
+            <input type="email" name="email" class="form-control" placeholder="Email address" required autofocus>
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input type="password" name="password" class="form-control" placeholder="Password" required>
+        </form>
+
+        <button class="btn btn-lg btn-default btn-block btn-login-local">Sign in</button>
+
+        <div class="showResult"></div>
+
+        <hr />
+
+        <div class='signup'>Don't have an account? <a href='/join'>Sign up</a></div>
+
+    </div>
 
 </div>
 
 
-
-
 <script>
-    document.querySelector('.loginButton').addEventListener('click', function() {
-
-
+    document.querySelector('.btn-login-local').addEventListener('click', function() {
         var email = document.getElementsByName('email')[0].value;
         var password = document.getElementsByName('password')[0].value;
-
-        console.log("clicked");
-        console.log("email: " + email);
-        console.log("password: " + password);
-
         sendAjax('http://localhost:3000/login', email, password);
     });
+
+    document.querySelector('.btn-login-kakao').addEventListener('click', function() {
+        sendKakaoAjax('http://localhost:3000/login/kakao');
+    });
+
+    function sendKakaoAjax(url) {
+        console.log("sendKakaoAjax : " + url);
+        
+        $.ajax({
+            type: 'post',
+            url: url,
+            success: function (args) {
+                console.log("success");
+            },
+            error: function (err) {
+                console.log("error", err);
+            }
+        });
+    }
 
 
     // Ajax로 전달
@@ -60,7 +80,6 @@
         xmlHttpRequest.send(data);
 
         xmlHttpRequest.addEventListener('load', function() {
-            console.log("responseText : " + xmlHttpRequest.responseText);
             var result = JSON.parse(xmlHttpRequest.responseText);
             var resultDiv = document.querySelector(".showResult");
 
@@ -68,19 +87,11 @@
             console.log("xmlHttpRequest.status of result : " + result);
 
             if (result.email) {
-                console.log("Success");
                 window.location.href="/main";
             }
-            else if (xmlHttpRequest.status === 401) {
-                console.log("401 : " + result);
-                resultDiv.innerHTML = result + "<div class='signup'><a href='/join'>Sign up</a></div>";
-            }
             else {
-                console.log("Other");
                 resultDiv.innerHTML = result;
             }
-
-            console.log("done!!");
         });
 
     }
